@@ -33,7 +33,6 @@ async function main(): Promise<void> {
   app.use('/api/orders', paymentRouter);
 
   app.use(errorHandler);
-console.log(`API listening on http://localhost:${env.PORT}`);
   app.listen(env.PORT, () => {
     console.log(`API listening on http://localhost:${env.PORT}`);
   });
