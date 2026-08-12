@@ -10,8 +10,8 @@ function cookieOptions(): CookieOptions {
   const crossSite = env.NODE_ENV === 'production';
   return {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: env.NODE_ENV === 'production',
+    sameSite: crossSite ? 'none' : 'lax',
+    secure: crossSite,
     maxAge: sevenDaysMs,
     path: '/',
   };
@@ -22,10 +22,5 @@ export function setAuthCookie(res: Response, token: string): void {
 }
 
 export function clearAuthCookie(res: Response): void {
-  res.clearCookie(AUTH_COOKIE, {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: env.NODE_ENV === 'production',
-    path: '/',
-  });
+  res.clearCookie(AUTH_COOKIE, cookieOptions());
 }

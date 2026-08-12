@@ -76,15 +76,32 @@ async function request<T>(
     }
   }
 
-  const res = await fetch(path, {
+  const apiBase = (import.meta.env.VITE_SERVER_ORIGIN as string | undefined)?.replace(/\/$/, '') ?? '';
+  const url = `${apiBase}${path}`;
+
+  // #region agent log
+  fetch('http://127.0.0.1:7517/ingest/feaf587e-c599-448e-a318-8e1c483b8384',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3b445c'},body:JSON.stringify({sessionId:'3b445c',runId:'post-fix',hypothesisId:'A-C',location:'client.ts:request',message:'API request about to fire',data:{path,apiBase,url,method:options.method??'GET',host:typeof window!=='undefined'?window.location.host:null,href:typeof window!=='undefined'?window.location.href:null},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
+
+  const res = await fetch(url, {
     ...options,
     headers,
     credentials: 'include',
   });
 
+  const contentType = res.headers.get('content-type');
+  const contentDisposition = res.headers.get('content-disposition');
+
+  // #region agent log
+  fetch('http://127.0.0.1:7517/ingest/feaf587e-c599-448e-a318-8e1c483b8384',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3b445c'},body:JSON.stringify({sessionId:'3b445c',runId:'post-fix',hypothesisId:'B-D',location:'client.ts:request:response',message:'API response received',data:{url,status:res.status,ok:res.ok,contentType,contentDisposition,resUrl:res.url},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
+
   const data = (await res.json().catch(() => ({}))) as { message?: string };
 
   if (!res.ok) {
+    // #region agent log
+    fetch('http://127.0.0.1:7517/ingest/feaf587e-c599-448e-a318-8e1c483b8384',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3b445c'},body:JSON.stringify({sessionId:'3b445c',runId:'post-fix',hypothesisId:'B',location:'client.ts:request:error',message:'API request failed',data:{url,status:res.status,message:data.message??null,looksLikeSpaHtml:Boolean(contentDisposition&&contentDisposition.includes('index.html'))},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     throw new ApiError(res.status, data.message ?? 'Request failed');
   }
 
