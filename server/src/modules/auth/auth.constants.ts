@@ -6,6 +6,8 @@ export const AUTH_COOKIE = 'token';
 const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
 
 function cookieOptions(): CookieOptions {
+  // Cross-origin SPA (e.g. Vercel) + API host needs SameSite=None; Secure.
+  const crossSite = env.NODE_ENV === 'production';
   return {
     httpOnly: true,
     sameSite: 'lax',
