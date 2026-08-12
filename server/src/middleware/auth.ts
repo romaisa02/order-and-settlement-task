@@ -23,7 +23,25 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
     next(new AppError(401, 'Invalid or expired token'));
   }
 }
+export function requireAuthInnerRoutes(req: Request, _res: Response, next: NextFunction): void {
+  
+  try {
+     const authHeader = req.headers.authorization;
 
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log("authHeader", authHeader);
+      next(new AppError(401, 'Authentication requiredsssss'));
+      return;
+    }
+    const token = authHeader.split(" ")[2];
+    const payload = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
+    console.log("payload", payload);
+    req.userId = payload.userId;
+    next();
+  } catch {
+    next(new AppError(401, 'Invalid or expired token'));
+  }
+}
 const SEVEN_DAYS_SECONDS = 7 * 24 * 60 * 60;
 
 export function signToken(userId: string): string {

@@ -6,6 +6,8 @@ import { connectDb } from './db/connect';
 import { errorHandler } from './middleware/errorHandler';
 import { authRouter } from './modules/auth/auth.routes';
 import { userRouter } from './modules/users/user.routes';
+import orderRoutes from "./modules/orders/order.route";
+import { paymentRouter } from './modules/payments/payment.routes';
 
 async function main(): Promise<void> {
   await connectDb();
@@ -27,9 +29,11 @@ async function main(): Promise<void> {
 
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
+  app.use("/api/orders", orderRoutes);
+  app.use('/api/orders', paymentRouter);
 
   app.use(errorHandler);
-
+console.log(`API listening on http://localhost:${env.PORT}`);
   app.listen(env.PORT, () => {
     console.log(`API listening on http://localhost:${env.PORT}`);
   });
