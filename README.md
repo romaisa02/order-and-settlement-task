@@ -49,8 +49,18 @@ Open [http://localhost:5173](http://localhost:5173). The Vite dev server proxies
 | `GET` | `/api/auth/me` | required | Current user |
 | `GET` | `/api/users/me` | required | Own profile |
 | `PATCH` | `/api/users/me` | required | Update `name` and/or `email` |
+| `POST` | `/api/orders` | required | Create an order |
+| `GET` | `/api/orders` | required | List the signed-in user's orders |
+| `POST` | `/api/orders/:orderId/payments` | required | Record a payment against an order |
+| `GET` | `/api/orders/:orderId/payments` | required | List payments for an order |
 
 The JWT lives in an httpOnly `token` cookie. User id always comes from that token, never from the request body.
+
+## Order status and payments
+
+Order status is derived from payments and the due date. `pending` means no payments have been recorded, `partially_paid` means payments are below the order total, and `paid` means the total has been paid. An unpaid or partially paid order becomes `overdue` after its due date. A fully paid order remains `paid` even when its due date has passed.
+
+Payments require an amount of at least `0.01`, a valid date, and an optional note. Multiple payments are allowed, but their sum cannot exceed the order total. An over-payment returns `409` with code `PAYMENT_EXCEEDS_BALANCE` and includes the remaining balance so the client can correct the amount. Orders and payments are restricted to the authenticated user.
 
 ## Extending
 
