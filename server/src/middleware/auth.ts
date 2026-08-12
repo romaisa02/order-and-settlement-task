@@ -24,18 +24,15 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
   }
 }
 export function requireAuthInnerRoutes(req: Request, _res: Response, next: NextFunction): void {
-  
   try {
-     const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      console.log("authHeader", authHeader);
-      next(new AppError(401, 'Authentication requiredsssss'));
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      next(new AppError(401, 'Authentication required'));
       return;
     }
-    const token = authHeader.split(" ")[2];
+    const token = authHeader.split(' ')[1];
     const payload = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
-    console.log("payload", payload);
     req.userId = payload.userId;
     next();
   } catch {

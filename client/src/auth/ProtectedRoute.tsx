@@ -31,7 +31,7 @@ export function GuestRoute() {
   }
 
   if (user) {
-    return <Navigate to="/profile" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

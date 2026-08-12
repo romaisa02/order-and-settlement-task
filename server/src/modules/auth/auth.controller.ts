@@ -12,8 +12,9 @@ export async function signup(req: Request, res: Response): Promise<void> {
   }
 
   const user = await authService.signup(parsed.data);
-  setAuthCookie(res, signToken(user.id));
-  res.status(201).json({ user });
+  const token = signToken(user.id);
+  setAuthCookie(res, token);
+  res.status(201).json({ user, token });
 }
 
 export async function login(req: Request, res: Response): Promise<void> {
@@ -23,8 +24,9 @@ export async function login(req: Request, res: Response): Promise<void> {
   }
 
   const user = await authService.login(parsed.data);
-  setAuthCookie(res, signToken(user.id));
-  res.json({ user });
+  const token = signToken(user.id);
+  setAuthCookie(res, token);
+  res.json({ user, token });
 }
 
 export async function logout(_req: Request, res: Response): Promise<void> {

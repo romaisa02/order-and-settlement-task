@@ -28,7 +28,7 @@ export function Login() {
       <section className="card">
         <p className="eyebrow">Welcome back</p>
         <h1>Log in</h1>
-        <p className="lede">Sign in with your email and password to open your profile.</p>
+        <p className="lede">Sign in with your email and password to view your orders.</p>
 
         <form onSubmit={onSubmit}>
           {error ? (

@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { api, ApiError, type User } from '../api/client';
+import { api, ApiError, clearAuthToken, setAuthToken, type User } from '../api/client';
 
 interface AuthContextValue {
   user: User | null;
@@ -36,7 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!cancelled && !(err instanceof ApiError && err.status === 401)) {
           console.error(err);
         }
-        if (!cancelled) setUser(null);
+        if (!cancelled) {
+          if (err instanceof ApiError && err.status === 401) {
+            clearAuthToken();
+          }
+          setUser(null);
+        }
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -48,17 +53,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signup = useCallback(async (input: { name: string; email: string; password: string }) => {
-    const { user: created } = await api.signup(input);
+    const { user: created, token } = await api.signup(input);
+    setAuthToken(token);
     setUser(created);
   }, []);
 
   const login = useCallback(async (input: { email: string; password: string }) => {
-    const { user: current } = await api.login(input);
+    const { user: current, token } = await api.login(input);
+    setAuthToken(token);
     setUser(current);
   }, []);
 
   const logout = useCallback(async () => {
     await api.logout();
+    clearAuthToken();
     setUser(null);
   }, []);
 

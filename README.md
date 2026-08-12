@@ -1,6 +1,6 @@
-# Signup & login
+# Orders & settlements
 
-TypeScript MERN app with email/password auth. Each signed-in user can view and update only their own profile.
+TypeScript MERN app with email/password auth, an orders dashboard, and own-profile editing. Each signed-in user can only access their own orders and profile.
 
 ## Stack
 
@@ -37,24 +37,28 @@ cd server && npm run dev
 cd client && npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). The Vite dev server proxies `/api` to `http://localhost:5000`.
+Open [http://localhost:5173](http://localhost:5173). The Vite dev server proxies `/api` to `http://localhost:5001`.
+
+## UI
+
+After login, the home page is **Orders**: a table of your orders with customer, status, totals, amounts paid/due, and due date. Status filtering (`all`, `pending`, `partially_paid`, `paid`, `overdue`) happens in the client. Open **Profile** or **Log out** from the top-right user menu.
 
 ## API
 
 | Method | Path | Auth | Description |
 | --- | --- | --- | --- |
-| `POST` | `/api/auth/signup` | cookie set | Create account (`name`, `email`, `password`) |
-| `POST` | `/api/auth/login` | cookie set | Sign in |
+| `POST` | `/api/auth/signup` | cookie set; returns `token` | Create account (`name`, `email`, `password`) |
+| `POST` | `/api/auth/login` | cookie set; returns `token` | Sign in |
 | `POST` | `/api/auth/logout` | — | Clear session cookie |
-| `GET` | `/api/auth/me` | required | Current user |
-| `GET` | `/api/users/me` | required | Own profile |
-| `PATCH` | `/api/users/me` | required | Update `name` and/or `email` |
-| `POST` | `/api/orders` | required | Create an order |
-| `GET` | `/api/orders` | required | List the signed-in user's orders |
-| `POST` | `/api/orders/:orderId/payments` | required | Record a payment against an order |
-| `GET` | `/api/orders/:orderId/payments` | required | List payments for an order |
+| `GET` | `/api/auth/me` | cookie | Current user |
+| `GET` | `/api/users/me` | cookie | Own profile |
+| `PATCH` | `/api/users/me` | cookie | Update `name` and/or `email` |
+| `POST` | `/api/orders` | Bearer | Create an order |
+| `GET` | `/api/orders` | Bearer | List the signed-in user's orders |
+| `POST` | `/api/orders/:orderId/payments` | Bearer | Record a payment against an order |
+| `GET` | `/api/orders/:orderId/payments` | Bearer | List payments for an order |
 
-The JWT lives in an httpOnly `token` cookie. User id always comes from that token, never from the request body.
+Auth and profile routes use an httpOnly `token` cookie. Orders and payments require `Authorization: Bearer <jwt>`. Login and signup set the cookie and return `{ user, token }` so the client can store the JWT (e.g. in `localStorage`) and send it on order requests. User id always comes from the verified token, never from the request body.
 
 ## Order status and payments
 
@@ -64,4 +68,4 @@ Payments require an amount of at least `0.01`, a valid date, and an optional not
 
 ## Extending
 
-Add a feature as `server/src/modules/<name>/` (routes → controller → service → model). Protect routes with `requireAuth` and filter every query by `req.userId`.
+Add a feature as `server/src/modules/<name>/` (routes → controller → service → model). Protect cookie routes with `requireAuth`, Bearer routes with `requireAuthInnerRoutes`, and filter every query by `req.userId`.

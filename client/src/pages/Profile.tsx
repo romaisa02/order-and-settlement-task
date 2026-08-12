@@ -3,13 +3,12 @@ import { api, ApiError } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
 
 export function Profile() {
-  const { user, logout, setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [saving, setSaving] = useState(false);
-  const [loggingOut, setLoggingOut] = useState(false);
 
   if (!user) {
     return null;
@@ -31,29 +30,11 @@ export function Profile() {
     }
   }
 
-  async function onLogout() {
-    setError('');
-    setLoggingOut(true);
-    try {
-      await logout();
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Something went wrong');
-      setLoggingOut(false);
-    }
-  }
-
   return (
-    <main className="auth-shell">
+    <main className="page page-narrow">
       <section className="card">
-        <div className="card-header">
-          <div>
-            <p className="eyebrow">Your data</p>
-            <h1>Profile</h1>
-          </div>
-          <button type="button" className="ghost" onClick={onLogout} disabled={loggingOut}>
-            {loggingOut ? 'Logging out…' : 'Log out'}
-          </button>
-        </div>
+        <p className="eyebrow">Your data</p>
+        <h1>Profile</h1>
         <p className="lede">Only you can see and change this. Updates are scoped to your account on the server.</p>
 
         <form onSubmit={onSubmit}>

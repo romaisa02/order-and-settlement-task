@@ -46,7 +46,8 @@ h1 {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -60,6 +61,307 @@ input {
 
 .page-center.muted {
   color: var(--muted);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 252, 247, 0.92);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: 1.15rem;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.65rem 0.35rem 0.35rem;
+  border-radius: 999px;
+}
+
+.user-menu-trigger:hover:not(:disabled) {
+  background: #f3efe6;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #f7f4ee;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.user-menu-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.45rem);
+  width: min(18rem, calc(100vw - 2rem));
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 0.55rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.user-menu-meta {
+  padding: 0.55rem 0.65rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.25rem;
+}
+
+.user-menu-name,
+.user-menu-email {
+  margin: 0;
+}
+
+.user-menu-name {
+  font-weight: 700;
+}
+
+.user-menu-email {
+  color: var(--muted);
+  font-size: 0.88rem;
+  word-break: break-word;
+}
+
+.user-menu-dropdown a,
+.user-menu-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.65rem 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.user-menu-dropdown a:hover,
+.user-menu-dropdown button:hover:not(:disabled) {
+  background: #f3efe6;
+}
+
+.user-menu-error {
+  margin-top: 0.25rem;
+}
+
+.page {
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3rem;
+}
+
+.page-narrow {
+  display: grid;
+  place-items: start center;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.page-header .lede {
+  margin-bottom: 0;
+}
+
+.page-status {
+  margin: 0;
+}
+
+.filter-control {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 12rem;
+}
+
+.page-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.page-toolbar .filter-control {
+  min-width: 10rem;
+}
+
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  background: #fff;
+}
+
+select:focus {
+  outline: 2px solid rgba(31, 77, 58, 0.35);
+  border-color: var(--accent);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 40rem;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.orders-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: rgba(243, 239, 230, 0.55);
+}
+
+.orders-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.orders-table tbody tr.orders-row-link {
+  cursor: pointer;
+}
+
+.orders-table tbody tr.orders-row-link:hover,
+.orders-table tbody tr.orders-row-link:focus-visible {
+  background: rgba(31, 77, 58, 0.06);
+  outline: none;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-summary {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1.75rem;
+  padding: 1rem 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  max-width: 28rem;
+}
+
+.detail-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.detail-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.detail-section {
+  margin-bottom: 1.75rem;
+}
+
+.detail-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.status-pending {
+  background: #efe9dc;
+  color: #5c5347;
+}
+
+.status-partially_paid {
+  background: #e7eef8;
+  color: #2a4d73;
+}
+
+.status-paid {
+  background: #e7f1ec;
+  color: var(--ok);
+}
+
+.status-overdue {
+  background: #f8eaea;
+  color: var(--danger);
 }
 
 .card {
@@ -179,4 +481,22 @@ button.ghost:hover:not(:disabled) {
 .switch {
   margin: 1.1rem 0 0;
   text-align: center;
+}
+
+@media (max-width: 640px) {
+  .user-menu-label {
+    display: none;
+  }
+
+  .page-header {
+    align-items: stretch;
+  }
+
+  .filter-control {
+    width: 100%;
+  }
+
+  .page-toolbar {
+    align-items: stretch;
+  }
 }
