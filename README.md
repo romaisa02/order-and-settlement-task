@@ -229,8 +229,11 @@ After login, the home page is **Orders**: a table of your orders with customer, 
 | `PATCH` | `/api/users/me` | cookie | Update `name` and/or `email` |
 | `POST` | `/api/orders` | Bearer | Create an order |
 | `GET` | `/api/orders` | Bearer | List the signed-in user's orders |
+| `PUT` | `/api/orders/:id` | Bearer | Update an order |
+| `DELETE` | `/api/orders/:id` | Bearer | Delete a order |
 | `POST` | `/api/orders/:orderId/payments` | Bearer | Record a payment against an order |
 | `GET` | `/api/orders/:orderId/payments` | Bearer | List payments for an order |
+
 
 Auth and profile routes use an httpOnly `token` cookie. Orders and payments require `Authorization: Bearer <jwt>`. Login and signup set the cookie and return `{ user, token }` so the client can store the JWT (e.g. in `localStorage`) and send it on order requests. User id always comes from the verified token, never from the request body.
 
